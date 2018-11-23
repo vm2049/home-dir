@@ -1,0 +1,126 @@
+set $mod mod4
+set $alt mod1
+
+font pango:Roboto 10
+
+set $background #fafafa
+set $foreground #6c7680
+set $black      #5b4848
+set $red	    #cb6077
+set $green		#bec55b
+set $yellow		#e4bc87
+set $blue		#8ab3d5
+set $magenta    #a89bb9
+set $cyan	    #7bcdb4
+set $white	    #aaaaaa
+
+## set workspaces
+set $ws1  "1: 1"
+set $ws2  "2: 2"
+set $ws3  "3: 3"
+set $ws4  "4: 4"
+
+## use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+## set wallpaper
+#exec --no-startup-id nitrogen --restore
+exec --no-startup-id hsetroot -fill ~/Pictures/samuel-zeller-251360-unsplash.jpg
+
+## autostart mpd
+exec --no-startup-id mpd
+
+## keybind for launching a terminal
+bindsym $mod+Return exec kitty
+
+## start a web browser
+bindsym $mod+Shift+w exec firefox;workspace 2
+
+bindsym $mod+p exec scrot -q 100 'mv $f ~/Pictures/'
+
+## lock screen
+bindsym $alt+Control+l exec i3lock-fancy
+
+## kill focused window
+bindsym $mod+Escape kill
+
+## program launcher
+bindsym $mod+d exec rofi -modi drun -show drun
+
+focus_follows_mouse no
+
+## change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+## move focused window
+bindsym $mod+Shift+j move up
+bindsym $mod+Shift+k move down
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+l move right
+
+## enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen
+
+## toggle between tiling or floating
+bindsym $mod+space floating toggle
+
+## switch to workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+
+## next/previous workspace
+bindsym $alt+Control+Right workspace next
+bindsym $alt+Control+Left workspace prev
+
+## move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+
+## reload the configuration file
+bindsym $mod+Shift+BackSpace reload
+## restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Control+r restart
+## exit i3 (logs you out of your X session)
+## bindsym $mod+Control+Escape exec "i3-nagbar -t warning -m 'Really exit?' -b 'Yes' 'i3-msg exit'"
+
+## resize window (you can also use the mouse for that)
+mode "resize" {
+	bindsym Left resize shrink width 5 px or 5 ppt
+	bindsym Down resize grow height 5 px or 5 ppt
+	bindsym Up resize shrink height 5 px or 5 ppt
+	bindsym Right resize grow width 5 px or 5 ppt
+
+# back to normal: Enter or Escape
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+	bindsym Tab mode "default"
+}
+
+## colors                border      	background		text        	indicator
+client.focused          $background		$background		$foreground	 	$background
+client.focused_inactive $background   	$background  	$foreground 	$background
+client.unfocused        $background   	$background  	$foreground 	$background
+client.urgent           $background     $background   	$foreground 	$yellow
+
+## who needs window title when you have i3-gaps?
+for_window [class=".*"] border pixel 10
+gaps inner 20
+gaps outer 20
+
+## pre-determine workspace an app spawns at
+## ->	workspace 2 (browser)	<-
+assign [class=Firefox] 2
+
+## focus on launch
+for_window [class=kitty] floating enable focus
+## effective only focus on launch
+for_window [class=Firefox] floating enable focus
+# force floating for all new windows
+for_window [class="[.]*"] floating enable
